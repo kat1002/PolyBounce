@@ -37,11 +37,13 @@ public class SoundManager : MonoBehaviour
 
     public float BGMVolume => _bgmVolume;
     public float SFXVolume => _sfxVolume;
+    public AudioClip BGMGameplay => _bgmGameplay;
 
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         // BGM source
         _bgmSource           = gameObject.AddComponent<AudioSource>();
@@ -79,8 +81,7 @@ public class SoundManager : MonoBehaviour
     private void HandleRoundStart(int round)          => PlaySFX(_roundStart, 0.8f);
     private void HandleStateChanged(GameState state)
     {
-        if (state == GameState.StartRound) PlayBGM(_bgmGameplay);
-        if (state == GameState.GameOver)   { PlayBGM(_bgmGameOver); PlaySFX(_gameOver); }
+        if (state == GameState.GameOver) PlaySFX(_gameOver);
     }
 
     // ── BGM ───────────────────────────────────────────────────

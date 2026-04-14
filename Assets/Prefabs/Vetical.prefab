@@ -236,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShooterObstacle
   _collider: {fileID: -7364164698367238442}
+  _pointValue: 10
   _arrowTransform: {fileID: 3734053318663863821}
   _line: {fileID: 1476092994871195910}
 --- !u!120 &1476092994871195910

@@ -108,6 +108,14 @@ public class Ball : MonoBehaviour, IPoolable
         _rigidbody2D.linearVelocity = direction * _speed;
     }
 
+    // Called by specials (e.g. BumperObstacle) to override the ball's current direction.
+    public void Redirect(Vector2 direction)
+    {
+        _wallBounceCount = 0;
+        _reflectedThisStep = true;
+        _rigidbody2D.linearVelocity = direction.normalized * _speed;
+    }
+
     public void OnSpawn()
     {
         _isLaunched = false;

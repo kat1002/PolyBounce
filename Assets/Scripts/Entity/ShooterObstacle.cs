@@ -8,7 +8,7 @@ using UnityEngine;
 // The spawner controls the rotation; everything else is direction-agnostic.
 public class ShooterObstacle : BaseObstacle, ISpecial
 {
-    [SerializeField] private ObjectPool<ShooterObstacle> _pool;
+    [SerializeField] private int _pointValue;
 
     [Header("Visuals")]
     [SerializeField] private Transform _arrowTransform;
@@ -18,9 +18,12 @@ public class ShooterObstacle : BaseObstacle, ISpecial
     private Tween _arrowTween;
     private Sequence _lineTween;
 
-    public void SetPool(ObjectPool<ShooterObstacle> pool) => _pool = pool;
+    public int PointValue => _pointValue;
 
-    public void Init(Vector3 position, float rotationZ = 0f)
+    // ISpecial — rotation is randomized internally
+    public void Init(Vector3 position) => Init(position, Random.value < 0.5f ? 0f : 90f);
+
+    public void Init(Vector3 position, float rotationZ)
     {
         transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
         PlaySpawnAnimation(position);
@@ -167,7 +170,7 @@ public class ShooterObstacle : BaseObstacle, ISpecial
     protected override void OnReachedDeadLine() =>
         GameManager.Instance.SetState(GameState.GameOver);
 
-    protected override void Release() => _pool?.Release(this);
+    protected override void Release() => ReleaseShared();
 
     public override void OnSpawn()
     {

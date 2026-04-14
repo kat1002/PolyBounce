@@ -49,14 +49,14 @@ public class UIManager : MonoBehaviour
             bool newRecord = SaveManager.TrySaveHighscore(_score);
 
             if (_finalScoreText != null)
-                _finalScoreText.text = _score.ToString();
+                _finalScoreText.text = $"SCORE: {_score}";
 
             if (_highscoreText != null)
             {
                 int best = SaveManager.LoadHighscore();
                 _highscoreText.text = newRecord
-                    ? $"NEW BEST  {best}"
-                    : $"BEST  {best}";
+                    ? $"NEW BEST:  {best}"
+                    : $"BEST:  {best}";
             }
 
             if (_gameOverPanel != null)

@@ -8,6 +8,10 @@ public abstract class BaseObstacle : MonoBehaviour, IPoolable
 {
     [SerializeField] protected Collider2D _collider;
 
+    private ObjectPool<BaseObstacle> _sharedPool;
+    public void SetSharedPool(ObjectPool<BaseObstacle> pool) => _sharedPool = pool;
+    protected void ReleaseShared() => _sharedPool?.Release(this);
+
     protected virtual void OnEnable()
     {
         EventManager.OnRoundStart += HandleRoundStart;

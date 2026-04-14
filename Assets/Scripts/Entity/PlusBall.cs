@@ -3,10 +3,9 @@ using UnityEngine;
 public class PlusBall : BaseObstacle, ISpecial
 {
     [SerializeField] private FloatingText _floatingTextPrefab;
+    [SerializeField] private int _pointValue = 100;
 
-    private ObjectPool<PlusBall> _pool;
-
-    public void SetPool(ObjectPool<PlusBall> pool) => _pool = pool;
+    public int PointValue => _pointValue;
 
     public void Init(Vector3 position)
     {
@@ -40,8 +39,5 @@ public class PlusBall : BaseObstacle, ISpecial
         Release(); // no game over — just disappear
     }
 
-    protected override void Release()
-    {
-        _pool?.Release(this);
-    }
+    protected override void Release() => ReleaseShared();
 }

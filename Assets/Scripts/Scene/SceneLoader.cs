@@ -27,6 +27,11 @@ public class SceneLoader : MonoBehaviour
 
         // 2. Get the transition controller from it
         LoadingScreen loadingScreen = FindFirstObjectByType<LoadingScreen>();
+        if (loadingScreen == null)
+        {
+            Debug.LogError("LoadingScreen not found. Make sure the 'Loading' scene is added to the Build Settings/Profile.");
+            yield break;
+        }
         yield return loadingScreen.FadeIn(_fadeDuration);
 
         // 3. Load target scene async

@@ -236,6 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlusBall
   _collider: {fileID: -7364164698367238442}
   _floatingTextPrefab: {fileID: 3976435527519602885, guid: 2e3a0a6c8eeb1904ea68b349189dee42, type: 3}
+  _pointValue: 10
 --- !u!1 &9077729208768037135
 GameObject:
   m_ObjectHideFlags: 0
