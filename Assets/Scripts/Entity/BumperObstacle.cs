@@ -9,13 +9,24 @@ public class BumperObstacle : BaseObstacle, ISpecial
     [SerializeField] private int _pointValue = 50;
 
     private bool _wasHitThisRound;
-    private Tween _punchTween;
+    private Tween _idleTween;
 
     public int PointValue => _pointValue;
 
     public void Init(Vector3 position)
     {
         PlaySpawnAnimation(position);
+        _idleTween = DOVirtual.DelayedCall(0.4f, StartBreathe);
+    }
+
+    private void StartBreathe()
+    {
+        _idleTween?.Kill();
+        transform.localScale = Vector3.one;
+        _idleTween = transform
+            .DOScale(Vector3.one * 1.12f, 0.65f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -37,8 +48,10 @@ public class BumperObstacle : BaseObstacle, ISpecial
         EventManager.InvokeObstacleDestroyed(_pointValue);
         SoundManager.Instance?.PlayBallHitObstacle();
 
-        _punchTween?.Kill();
-        _punchTween = transform.DOPunchScale(Vector3.one * 0.5f, 0.25f, 6, 0.4f);
+        _idleTween?.Kill();
+        transform.localScale = Vector3.one;
+        _idleTween = transform.DOPunchScale(Vector3.one * 0.5f, 0.25f, 6, 0.4f)
+            .OnComplete(StartBreathe);
     }
 
     protected override void OnRoundStart(int round)
@@ -46,7 +59,7 @@ public class BumperObstacle : BaseObstacle, ISpecial
         if (_wasHitThisRound)
         {
             _wasHitThisRound = false;
-            _punchTween?.Kill();
+            _idleTween?.Kill();
             transform.DOKill();
             transform.DOScale(Vector3.zero, 0.15f)
                 .SetEase(Ease.InBack)
@@ -54,7 +67,10 @@ public class BumperObstacle : BaseObstacle, ISpecial
         }
         else
         {
+            _idleTween?.Kill();
+            transform.localScale = Vector3.one;
             base.OnRoundStart(round);
+            _idleTween = DOVirtual.DelayedCall(0.55f, StartBreathe);
         }
     }
 
@@ -82,8 +98,9 @@ public class BumperObstacle : BaseObstacle, ISpecial
     public override void OnDespawn()
     {
         base.OnDespawn();
-        _punchTween?.Kill();
-        _punchTween = null;
+        _idleTween?.Kill();
+        _idleTween = null;
         _wasHitThisRound = false;
+        transform.localScale = Vector3.one;
     }
 }

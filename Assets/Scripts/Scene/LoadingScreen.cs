@@ -23,6 +23,7 @@ public class LoadingScreen : MonoBehaviour
         float t = 0;
         while (t < 1f)
         {
+            if (_mat == null) yield break;
             t += Time.deltaTime / duration;
             _mat.SetFloat(CutoffId, Mathf.Clamp01(t));
             yield return null;
@@ -35,6 +36,7 @@ public class LoadingScreen : MonoBehaviour
         float t = 1f;
         while (t > 0f)
         {
+            if (_mat == null) yield break;
             t -= Time.deltaTime / duration;
             _mat.SetFloat(CutoffId, Mathf.Clamp01(t));
             yield return null;
